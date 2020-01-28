@@ -1,3 +1,7 @@
+
+
+<h2>Following are the top 10 words of the webpage:</h2>
+
 {% if found %}
   <p><i>Accesed from the database</i></p>
 {% else %}
@@ -5,8 +9,5 @@
 {% endif %}
 
 {% for obj in query_set %}
-  {{ obj.key }}
-  <br>
-  {{ obj.value }}
-  <br>
+  <p>{{ obj.key }}  -  {{ obj.value }}</p>
 {% endfor %}
