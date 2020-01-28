@@ -37,10 +37,10 @@ def count(request):
             q = FinalData(query=p, key=word[0], value=word[1])
             q.save()
 
-    context = {}
     query_set = FinalData.objects.filter(query=p).order_by('-value')
 
-    for obj in query_set:
-        context[obj.key] = obj.value
+    context = {
+        'query_set': query_set
+    }
 
     return render(request, 'count.html', context)
