@@ -3,9 +3,9 @@ from django.shortcuts import render
 
 from bs4 import BeautifulSoup
 
-import requests
+import urllib3
 
-from models import FinalData
+from .models import FinalData, UrlText
 
 
 def home(request):
@@ -19,8 +19,9 @@ def count(request):
     except UrlText.DoesNotExist:
         p = UrlText(urltext=urltext)
         p.save()
-        page = requests.get(urltext)
-        soup = BeautifulSoup(page.text, 'html.parser')
+        req = urllib3.PoolManager()
+        res = req.request('GET', urltext)
+        soup = BeautifulSoup(res.data, 'html.parser')
         data = soup.get_text()
         record = {}
         for word in data.split():
@@ -28,7 +29,7 @@ def count(request):
                 record[word]+=1
             else:
                 record[word]=1
-        sorted_data = sorted(record.items(), key = lambda kv:(kv[1]), reverse=True)
+        sorted_data = sorted(record.items(), key = lambda kv:(kv[1],kv[0]), reverse=True)
         counter = 0
         for word in sorted_data:
             counter+=1

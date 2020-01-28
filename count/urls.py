@@ -6,6 +6,6 @@ from . import views
 app_name = 'count'
 
 urlpatterns = [
-    path('frequency/', views.home, 'frequency'),
-    path('result/', views.count, 'result'),
+    path('frequency/', views.home, name='frequency'),
+    path('result/', views.count, name='result'),
 ]
