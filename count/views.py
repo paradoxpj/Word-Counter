@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 
 import urllib3
 
+import re
+
 from .models import FinalData, UrlText
 
 
@@ -31,17 +33,27 @@ def count(request):
                 record[word]=1
         sorted_data = sorted(record.items(), key = lambda kv:(kv[1],kv[0]), reverse=True)
         counter = 0
+        file = open('commonwords.txt', 'r')
+        string = file.read()
+        file.close()
         for word in sorted_data:
-            counter+=1
-            if counter>10:
+            if word[0] in string.split:
+                continue
+            if re.match("^[A-Za-z]*$", word[0]):
+                counter+=1
+                q = FinalData(query=p, key=word[0], value=word[1])
+                q.save()
+            if counter==10:
                 break
-            q = FinalData(query=p, key=word[0], value=word[1])
-            q.save()
+        found = False
+    else:
+        found = True
 
     query_set = FinalData.objects.filter(query=p).order_by('-value')
 
     context = {
-        'query_set': query_set
+        'query_set': query_set,
+        'found': found,
     }
 
     return render(request, 'count.html', context)

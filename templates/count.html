@@ -1,3 +1,9 @@
+{% if found %}
+  <p><i>Accesed from the database</i></p>
+{% else %}
+  <p><i>Freshly processed</i></p>
+{% endif %}
+
 {% for obj in query_set %}
   {{ obj.key }}
   <br>
