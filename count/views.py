@@ -37,7 +37,7 @@ def count(request):
         string = file.read()
         file.close()
         for word in sorted_data:
-            if word[0] in string.split:
+            if word[0] in string.split():
                 continue
             if re.match("^[A-Za-z]*$", word[0]):
                 counter+=1
